@@ -5,28 +5,20 @@ import { Button, Modal } from 'react-bootstrap';
 
 const App = () => {
     let [decnum, setDecnum] = useState('');
-    var decformat = /^[0-1]$/;
-    function testDecimal(decnum){
-      var formatOK = decformat.exec(decnum.value);
-      if (!formatOK){
-        console.error(decnum.value + 'isn\'t a binary number!');
-      } else {
-        console.log('Thanks, the number entered is binary');
-      }
-    }
     const finalvar = decnum
-    function isBinCorrect(finalvar){
-      for (var i of finalvar){
-        if (i !== 0 && i !== 1){
-          console.log("Not a binary number, try again");
-        }
-        else {
-          console.log('Thanks, binary is accepted');
-        }
-      }
-    }
     function handleNumChange(e){
       setDecnum(e.target.value);
+    }
+    function handleNumbChange(e){
+      //var numcheck = "^[0-1]*$"
+      var numcheck = "\b[01]+\b"
+      var numverify = e
+      if (numverify === numcheck){
+        setDecnum(e.target.value);
+      }
+      else {
+        window.alert("Enter only binary numbers")
+      }
     }
     let summation = 0;
     let i = 0;
@@ -40,12 +32,12 @@ const App = () => {
                         type="number"
                         className="form-control"
                         placeholder="Enter any binary number"
-                        onChange={handleNumChange} />
+                        //onChange={handleNumChange}
+                        //pattern="[0-1]?[0-1]"
+                        title="Binary numbers only"
+                        //pattern=".{5,}" 
+                        onInput={event => handleNumbChange(event.target.value)} />
                 </p>
-                <button
-                  onClick={isBinCorrect}>
-                  test
-                </button>
                 <Modale />
             </header>
         </div>
