@@ -4,24 +4,15 @@ import './App.css';
 import { Button, Modal } from 'react-bootstrap';
 
 const App = () => {
-    let [decnum, setDecnum] = useState('');
-    const finalvar = decnum
+    var regexp = /[0-1]*/;
+    let [decnum, setDecnum] = useState(regexp);
     function handleNumChange(e){
       setDecnum(e.target.value);
     }
-    function handleNumbChange(e){
-      //var numcheck = "^[0-1]*$"
-      var numcheck = "\b[01]+\b"
-      var numverify = e
-      if (numverify === numcheck){
-        setDecnum(e.target.value);
-      }
-      else {
-        window.alert("Enter only binary numbers")
-      }
-    }
     let summation = 0;
     let i = 0;
+    var result = regexp.test(decnum);
+    console.log(result);
 
     return (
         <div className="App">
@@ -32,11 +23,8 @@ const App = () => {
                         type="number"
                         className="form-control"
                         placeholder="Enter any binary number"
-                        //onChange={handleNumChange}
-                        //pattern="[0-1]?[0-1]"
                         title="Binary numbers only"
-                        //pattern=".{5,}" 
-                        onInput={event => handleNumbChange(event.target.value)} />
+                        onInput={handleNumChange} />
                 </p>
                 <Modale />
             </header>
