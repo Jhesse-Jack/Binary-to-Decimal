@@ -1,70 +1,71 @@
-import React, {useState} from 'react';
-import './bootstrap.min.css';
-import './App.css';
-import { Button, Modal } from 'react-bootstrap';
+import React, { useState } from "react";
+import "./bootstrap.min.css";
+import "./App.css";
+import { Button } from "react-bootstrap";
+import ResultModal from "./components/Modal";
+// import { render } from "@testing-library/react";
 
 const App = () => {
-    var regexp = /[0-1]*/;
-    let [decnum, setDecnum] = useState(regexp);
-    function handleNumChange(e){
-      setDecnum(e.target.value);
+  // var regexp = /^[0-1]*[:.,-]?$/g;
+  const [show, setShow] = useState(false);
+  const [decnum, setdecnum] = useState("");
+  const [isValid, setisValid] = useState(false);
+  const [decimal, setDecimal] = useState(null);
+
+  const handleShow = () => {
+    setShow(true);
+    setDecimal(convertToDecimal());
+    clearInput();
+  };
+  const handleClose = () => setShow(false);
+
+  const handleNumChange = (e) => {
+    const regexp = /^[0-1]*[:.,-]?$/g;
+    if (regexp.test(e.target.value)) {
+      setisValid(true);
+      setdecnum(e.target.value);
+    } else {
+      setisValid(false);
     }
-    let summation = 0;
-    let i = 0;
-    var result = regexp.test(decnum);
-    console.log(result);
+  };
 
-    return (
-        <div className="App">
-            <header className="App-header">
-                <p> Enter any binary number (to be converted to decimal base): 
-                    &nbsp;
-                    <input 
-                        type="number"
-                        className="form-control"
-                        placeholder="Enter any binary number"
-                        title="Binary numbers only"
-                        onInput={handleNumChange} />
-                </p>
-                <Modale />
-            </header>
-        </div>
-    );
+  const convertToDecimal = () => {
+    // function to do conversion
+    return parseInt(decnum, 2);
+  };
 
-    function Modale(props){
-      const [show, setShow] = useState(false);
-      const handleShow = () => setShow(true);
-      const handleClose = () => setShow(false);
-      while(decnum){
-        summation = summation + Math.pow(2, i) * (decnum % 10);
-        i++;
-        decnum = parseInt(decnum / 10);
-        console.log(summation);
-      }
-      return (
-        <>
+  const clearInput = () => {
+    setdecnum("");
+  };
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <p>
+          {" "}
+          Enter any binary number (to be converted to decimal base): &nbsp;
+          <input
+            type="number"
+            className="form-control"
+            placeholder="Enter any binary number"
+            title="Binary numbers only"
+            onChange={handleNumChange}
+            value={decnum}
+          />
+          {!isValid ? (
+            <p style={{ color: "red", fontSize: "12px", textAlign: "left" }}>
+              Input a Binary Number
+            </p>
+          ) : null}
           <Button variant="primary" onClick={handleShow}>
             CONVERT
           </Button>
-    
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title> Binary Converter </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              Your answer is: {summation}
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant = "secondary" onClick={handleClose}>
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </>
-      )
-    }
+        </p>
+
+        <ResultModal show={show} close={handleClose} result={decimal} />
+      </header>
+    </div>
+  );
 };
-
-
 
 export default App;
